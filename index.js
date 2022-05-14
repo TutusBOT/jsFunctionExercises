@@ -22,16 +22,10 @@ function sumOfArray(array) {
 // example input [[2, [4, [44,5,6]]], [4,5,6], [[2,4], 4], 5]]
 // example output [2, 4, 44, 5, 6, 4, 5, 6, 2, 4, 4, 5]
 function flattenArray(array) {
-	let hasArrayInside = false;
-	array.forEach((item) => {
-		if (item instanceof Array) {
-			hasArrayInside = true;
+	for (const item of array) {
+		if (Array.isArray(item)) {
+			return flattenArray(array.flat());
 		}
-	});
-	if (!hasArrayInside) {
-		return array;
-	} else {
-		return flattenArray(array.flat());
 	}
 }
 
@@ -58,15 +52,6 @@ function findCommonElementsInArray(arr1, arr2) {
 // example output ['a', 3, 21, 'c', 'e']
 
 function findDifferentElementsInArray(arr1, arr2) {
-	// TO DO
-
-	// const differentElements1 = arr1.filter((elem1) => {
-	// 	return arr2.find((elem2) => elem2 !== elem1);
-	// });
-	// const differentElements2 = arr2.filter((elem2) => {
-	// 	return arr1.find((elem1) => elem1 !== elem2);
-	// });
-	// return [...differentElements1, ...differentElements2];
 	let filteredArray = [];
 	arr1.forEach((elem1) => {
 		if (!arr2.find((elem2) => elem2 === elem1)) filteredArray.push(elem1);
@@ -111,13 +96,11 @@ function isEqual(obj1, obj2) {
 	const keys1 = Object.keys(obj1);
 	const keys2 = Object.keys(obj2);
 	if (keys1.length !== keys2.length) return false;
-	let equal = true;
-	keys1.forEach((key) => {
-		if (obj1[key] !== obj2[key]) {
-			equal = false;
-		}
-	});
-	return equal;
+	for (const key of keys1) {
+		if (obj1[key] !== obj2[key]) return false;
+	}
+
+	return true;
 }
 console.log(
 	isEqual({ a: "b", c: "d" }, { c: "d", a: "b" }),
@@ -132,9 +115,8 @@ console.log(
 // example output { id: '22' }
 
 function getObjectWithoutKeys(keys, object) {
-	let objectWithoutKeys = object;
 	keys.forEach((key) => {
-		delete objectWithoutKeys[key];
+		delete object[key];
 	});
-	return objectWithoutKeys;
+	return object;
 }
